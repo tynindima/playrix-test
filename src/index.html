@@ -5,9 +5,267 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Playrix</title>
     <link rel="stylesheet" href="./styles/main.css">
+    <script src="scripts/pixi.js"></script>
   </head>
   <body>
-    <h1>Hello</h1>
-    <script type="text/javascript" src="scripts/main.js"></script>
+  <canvas id="myCanvas"></canvas>
+    <script type="text/javascript">
+      const canvas = document.getElementById('myCanvas');
+      let Application = PIXI.Application,
+          sprite = PIXI.Sprite.from;
+
+      let app = new Application({
+        view: canvas,
+        width: window.innerWidth,
+        height: window.innerHeight,
+        antialias: true,
+        transparent: false,
+        resolution: 1,
+      });
+
+      const texture = PIXI.Texture.from('./images/bkg.png');
+      const img = new PIXI.Sprite(texture);
+      img.width = window.innerWidth;
+      img.height = window.innerHeight;
+      app.stage.addChild(img);
+
+      const austin = sprite('./images/Austin.png');
+      austin.x = app.renderer.width / 2;
+      austin.y = app.renderer.height / 2;
+      austin.anchor.y = 0.65;
+      app.stage.addChild(austin);
+
+      const dec2 = new PIXI.Container();
+      app.stage.addChild(dec2);
+
+
+
+      const globe = sprite('./images/globe.png');
+      globe.x = 85;
+      globe.y = app.renderer.height / 6;;
+      dec2.addChild(globe);
+
+      const plant1 = sprite('./images/plant1.png');
+      plant1.x = app.renderer.width / 3.1;
+      dec2.addChild(plant1);
+
+      const plant2 = sprite('./images/plant2.png');
+      plant2.x = app.renderer.width;
+      plant2.y = app.renderer.height / 2;
+      plant2.anchor.x = 2.3;
+      plant2.anchor.y = 1.1;
+      dec2.addChild(plant2);
+
+      const book_stand = sprite('./images/book_stand.png');
+      book_stand.x = app.renderer.width / 2;
+      book_stand.anchor.x = -1.05;
+      dec2.addChild(book_stand);
+
+      const table = sprite('./images/table.png');
+      table.x = app.renderer.width / 7.2;
+      table.y = app.renderer.height / 2;
+      table.anchor.y = 0.57;
+      dec2.addChild(table);
+
+      const sofa = sprite('./images/sofa.png');
+      sofa.x = app.renderer.width / 2;
+      sofa.y = app.renderer.height / 2;
+      sofa.anchor.x = 1.6;
+      dec2.addChild(sofa);
+
+      const stair_old = sprite('./images/stair_old.png');
+      stair_old.x = app.renderer.width;
+      stair_old.y = app.renderer.height / 2;
+      stair_old.anchor.x = 1;
+      stair_old.anchor.y = 0.4;
+      app.stage.addChild(stair_old);
+
+      const stair_blue = sprite('./images/stair_blue.png');
+      stair_blue.x = app.renderer.width;
+      stair_blue.y = app.renderer.height / 2;
+      stair_blue.anchor.x = 1;
+      stair_blue.anchor.y = 0.52;
+      app.stage.addChild(stair_blue);
+      stair_blue.visible = false;
+
+      const stair_red = sprite('./images/stair_red.png');
+      stair_red.x = app.renderer.width;
+      stair_red.y = app.renderer.height / 2;
+      stair_red.anchor.x = 1;
+      stair_red.anchor.y = 0.52;
+      app.stage.addChild(stair_red);
+      stair_red.visible = false;
+
+      const stair_green = sprite('./images/stair_green.png');
+      stair_green.x = app.renderer.width;
+      stair_green.y = app.renderer.height / 2;
+      stair_green.anchor.x = 1;
+      stair_green.anchor.y = 0.52;
+      app.stage.addChild(stair_green);
+      stair_green.visible = false;
+
+      const plant3 = sprite('./images/plant3.png');
+      plant3.x = app.renderer.width;
+      plant3.y = app.renderer.height;
+      plant3.anchor.x = 1;
+      plant3.anchor.y = 1;
+      app.stage.addChild(plant3);
+
+      const menu = new PIXI.Container();
+      menu.x = app.renderer.width / 1.7;
+      menu.y = 11;
+      menu.width = 380;
+      menu.height = 130;
+      app.stage.addChild(menu);
+      menu.visible = false;
+
+      const item1 = new PIXI.Container();
+      item1.interactive = true;
+      item1.buttonMode = true;
+      item1
+        .on('pointerdown', onItemDown);
+      menu.addChild(item1);
+      function onItemDown() {
+        ok1.visible = true;
+        ok2.visible = false;
+        ok3.visible = false;
+        menu_fon1_act.visible = true;
+        menu_fon2_act.visible = false;
+        menu_fon3_act.visible = false;
+        stair_old.visible = false;
+        stair_blue.visible = true;
+        stair_red.visible = false;
+        stair_green.visible = false;
+      }
+      const menu_fon1 = sprite('./images/menu_fon.png');
+      menu_fon1.x = 10;
+      item1.addChild(menu_fon1);
+      const menu_fon1_act = sprite('./images/menu_fon_act.png');
+      menu_fon1_act.x = 20;
+      menu_fon1_act.y = 5;
+      item1.addChild(menu_fon1_act);
+      menu_fon1_act.visible = false;
+      const st_blue = sprite('./images/st_blue.png');
+      st_blue.x = 37;
+      st_blue.y = 7;
+      item1.addChild(st_blue);
+      const ok1 = sprite('./images/ok.png');
+      ok1.x = 0;
+      ok1.y = 0;
+      ok1.anchor.y = -1.2;
+      item1.addChild(ok1);
+      ok1.visible = false;
+
+      const item2 = new PIXI.Container();
+      item2.x = 130;
+      item2.y = 0;
+      item2.interactive = true;
+      item2.buttonMode = true;
+      item2
+        .on('pointerdown', onItemDown2);
+      menu.addChild(item1);
+      function onItemDown2() {
+        //this.isdown = true;
+        ok1.visible = false;
+        ok2.visible = true;
+        ok3.visible = false;
+        menu_fon1_act.visible = false;
+        menu_fon2_act.visible = true;
+        menu_fon3_act.visible = false;
+        stair_old.visible = false;
+        stair_blue.visible = false;
+        stair_red.visible = true;
+        stair_green.visible = false;
+      }
+      menu.addChild(item2);
+      const menu_fon2 = sprite('./images/menu_fon.png');
+      menu_fon2.x = 10;
+      item2.addChild(menu_fon2);
+      const menu_fon2_act = sprite('./images/menu_fon_act.png');
+      menu_fon2_act.x = 20;
+      menu_fon2_act.y = 5;
+      item2.addChild(menu_fon2_act);
+      menu_fon2_act.visible = false;
+      const st_red = sprite('./images/st_red.png');
+      st_red.x = 40;
+      st_red.y = 0;
+      item2.addChild(st_red);
+      const ok2 = sprite('./images/ok.png');
+      ok2.x = 0;
+      ok2.y = 0;
+      ok2.anchor.y = -1.2;
+      item2.addChild(ok2);
+      ok2.visible = false;
+
+      const item3 = new PIXI.Container();
+      item3.x = 260;
+      item3.y = 0;
+      item3.interactive = true;
+      item3.buttonMode = true;
+      item3
+        .on('pointerdown', onItemDown3);
+      menu.addChild(item1);
+      function onItemDown3() {
+        //this.isdown = true;
+        ok1.visible = false;
+        ok2.visible = false;
+        ok3.visible = true;
+        menu_fon1_act.visible = false;
+        menu_fon2_act.visible = false;
+        menu_fon3_act.visible = true;
+        stair_old.visible = false;
+        stair_blue.visible = false;
+        stair_red.visible = false;
+        stair_green.visible = true;
+      }
+      menu.addChild(item3);
+      const menu_fon3 = sprite('./images/menu_fon.png');
+      menu_fon3.x = 10;
+      item3.addChild(menu_fon3);
+      const menu_fon3_act = sprite('./images/menu_fon_act.png');
+      menu_fon3_act.x = 20;
+      menu_fon3_act.y = 5;
+      item3.addChild(menu_fon3_act);
+      menu_fon3_act.visible = false;
+      const st_green = sprite('./images/st_green.png');
+      st_green.x = 36;
+      st_green.y = 0;
+      item3.addChild(st_green);
+      const ok3 = sprite('./images/ok.png');
+      ok3.x = 0;
+      ok3.y = 0;
+      ok3.anchor.y = -1.2;
+      item3.addChild(ok3);
+      ok3.visible = false;
+
+      const hammer = sprite('./images/hammer.png');
+      hammer.x = app.renderer.width;
+      hammer.y = app.renderer.height / 2;
+      hammer.anchor.x = 3;
+      hammer.anchor.y = 0.5;
+      hammer.interactive = true;
+      hammer.buttonMode = true;
+      hammer.on('pointerdown', onHammerCklick);
+      function onHammerCklick() {
+        menu.visible = true;
+        hammer.visible = false;
+      }
+      app.stage.addChild(hammer);
+
+      const logo = sprite('./images/logo.png');
+      // logo.x = 31;
+      // logo.y = 4;
+      logo.position.set(31, 4);
+      app.stage.addChild(logo);
+
+      const cont = sprite('./images/continue.png');
+      cont.x = app.renderer.width / 2;
+      cont.y = app.renderer.height;
+      cont.anchor.x = 0.5;
+      cont.anchor.y = 1.2;
+      app.stage.addChild(cont);
+
+
+    </script>
   </body>
 </html>
