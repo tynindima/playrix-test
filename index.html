@@ -11,63 +11,87 @@
   <canvas id="myCanvas"></canvas>
     <script type="text/javascript">
       const canvas = document.getElementById('myCanvas');
+      let _w = window.innerWidth;
+      let _h = window.innerHeight;
+
+      const renderer = new PIXI.Renderer({
+        view: canvas,
+        width: _w,
+        height: _h,
+        resolution: window.devicePixelRatio,
+        autoDensity: true,
+      });
+
+      window.addEventListener('resize', resize);
+
+      function resize () {
+        _w = window.innerWidth;
+        _h = window.innerHeight;
+      }
+
+      const stage = new PIXI.Container();
+      const ticker = new PIXI.Ticker();
+
       let Application = PIXI.Application,
           sprite = PIXI.Sprite.from;
 
-      let app = new Application({
-        view: canvas,
-        width: window.innerWidth,
-        height: window.innerHeight,
-        antialias: true,
-        transparent: false,
-        resolution: 1,
-      });
+      // let app = new Application({
+      //   view: canvas,
+      //   width: window.innerWidth,
+      //   height: window.innerHeight,
+      //   antialias: true,
+      //   transparent: false,
+      //   resolution: 1,
+      // });
 
       const texture = PIXI.Texture.from('./images/bkg.png');
       const img = new PIXI.Sprite(texture);
-      img.width = window.innerWidth;
-      img.height = window.innerHeight;
-      app.stage.addChild(img);
+
+      stage.addChild(img);
+      ticker.add(() => {
+        img.width = window.innerWidth;
+        img.height = window.innerHeight;
+      });
 
       const austin = sprite('./images/Austin.png');
-      austin.x = app.renderer.width / 2;
-      austin.y = app.renderer.height / 2;
+      austin.x = renderer.screen.width / 2;
+      austin.y = renderer.screen.height / 2;
       austin.anchor.y = 0.65;
-      app.stage.addChild(austin);
+      stage.addChild(austin);
 
       const dec2 = new PIXI.Container();
-      app.stage.addChild(dec2);
+      stage.addChild(dec2);
 
       const globe = sprite('./images/globe.png');
       globe.x = 85;
-      globe.y = app.renderer.height / 6;;
+      globe.y = renderer.screen.height / 6;;
       dec2.addChild(globe);
 
       const plant1 = sprite('./images/plant1.png');
-      plant1.x = app.renderer.width / 3.1;
+      plant1.x = renderer.screen.width / 3.1;
       dec2.addChild(plant1);
 
       const plant2 = sprite('./images/plant2.png');
-      plant2.x = app.renderer.width;
-      plant2.y = app.renderer.height / 2;
+      plant2.x = renderer.screen.width;
+      plant2.y = renderer.screen.height / 2;
       plant2.anchor.x = 2.3;
       plant2.anchor.y = 1.1;
       dec2.addChild(plant2);
 
       const book_stand = sprite('./images/book_stand.png');
-      book_stand.x = app.renderer.width / 2;
+      book_stand.x = renderer.screen.width / 2;
       book_stand.anchor.x = -1.05;
       dec2.addChild(book_stand);
 
       const table = sprite('./images/table.png');
-      table.x = app.renderer.width / 7.2;
-      table.y = app.renderer.height / 2;
+      table.x = renderer.screen.width / 7.2;
+      table.y = renderer.screen.height / 2;
       table.anchor.y = 0.57;
       dec2.addChild(table);
 
       const sofa = sprite('./images/sofa.png');
-      sofa.x = app.renderer.width / 2;
-      sofa.y = app.renderer.height / 2;
+      sofa.x = renderer.screen.width / 2;
+      sofa.y = renderer.screen.height / 2;
       sofa.anchor.x = 1.6;
       dec2.addChild(sofa);
 
@@ -93,25 +117,25 @@
       ];
 
       const stair = new PIXI.Sprite(stair_old);
-      stair.x = app.screen.width;
-      stair.y = app.screen.height / 2;
+      stair.x = renderer.screen.width;
+      stair.y = renderer.screen.height / 2;
       stair.anchor.x = 1;
       stair.anchor.y = 0.4;
-      app.stage.addChild(stair);
+      stage.addChild(stair);
 
       const plant3 = sprite('./images/plant3.png');
-      plant3.x = app.renderer.width;
-      plant3.y = app.renderer.height;
+      plant3.x = renderer.screen.width;
+      plant3.y = renderer.screen.height;
       plant3.anchor.x = 1;
       plant3.anchor.y = 1;
-      app.stage.addChild(plant3);
+      stage.addChild(plant3);
 
       const menu = new PIXI.Container();
-      menu.x = app.renderer.width / 1.7;
+      menu.x = renderer.screen.width / 1.7;
       menu.y = 11;
       menu.width = 380;
       menu.height = 130;
-      app.stage.addChild(menu);
+      stage.addChild(menu);
       menu.visible = false;
 
       const oks = [];
@@ -137,7 +161,7 @@
           let n = 280;
           let check1 = true;
           let check2 = true;
-          app.ticker.add(() => {
+          ticker.add(() => {
             if (n < 350 && check1) {
               n += 3;
               stair.y = n;
@@ -183,8 +207,8 @@
       let hammerScale = 0;
 
       const hammer = sprite('./images/hammer.png');
-      hammer.x = app.renderer.width / 1.25;
-      hammer.y = app.renderer.height / 2;
+      hammer.x = renderer.screen.width / 1.25;
+      hammer.y = renderer.screen.height / 2;
       hammer.anchor.x = 0.5;
       hammer.anchor.y = 0.5;
       hammer.scale.set(0, 0);
@@ -196,9 +220,9 @@
         hammer.visible = false;
       }
       setTimeout(() => {
-       app.stage.addChild(hammer);
+       stage.addChild(hammer);
 
-       app.ticker.add(() => {
+       ticker.add(() => {
          hammerScale += 0.04;
          if (hammerScale <= 1) {
            hammer.scale.set(hammerScale, hammerScale);
@@ -207,7 +231,7 @@
       }, 2000);
 
       const final = new PIXI.Container();
-      app.stage.addChild(final);
+      stage.addChild(final);
       final.visible = false;
 
       const final_layer = sprite('./images/final_layer.png');
@@ -224,24 +248,26 @@
 
       const logo = sprite('./images/logo.png');
       logo.position.set(31, 4);
-      app.stage.addChild(logo);
+      stage.addChild(logo);
 
       const cont = sprite('./images/continue.png');
-      cont.x = app.renderer.width / 2;
-      cont.y = app.renderer.height - 100;
+      cont.x = renderer.screen.width / 2;
+      cont.y = renderer.screen.height - 100;
       cont.anchor.x = 0.5;
       cont.anchor.y = 0.5;
       cont.interactive = true;
       cont.buttonMode = true;
-      app.stage.addChild(cont);
+      stage.addChild(cont);
 
       let count = 0;
 
-      app.ticker.add(() => {
+      ticker.add(() => {
           count += 0.05;
           cont.scale.x = 1 + Math.sin(count) * 0.05;
           cont.scale.y = 1 + Math.sin(count) * 0.05;
+          renderer.render(stage);
       });
+      ticker.start();
     </script>
   </body>
 </html>
