@@ -38,8 +38,6 @@
       const dec2 = new PIXI.Container();
       app.stage.addChild(dec2);
 
-
-
       const globe = sprite('./images/globe.png');
       globe.x = 85;
       globe.y = app.renderer.height / 6;;
@@ -73,36 +71,33 @@
       sofa.anchor.x = 1.6;
       dec2.addChild(sofa);
 
-      const stair_old = sprite('./images/stair_old.png');
-      stair_old.x = app.renderer.width;
-      stair_old.y = app.renderer.height / 2;
-      stair_old.anchor.x = 1;
-      stair_old.anchor.y = 0.4;
-      app.stage.addChild(stair_old);
+      const stair_old = PIXI.Texture.from('./images/stair_old.png');
+      const stair_blue = PIXI.Texture.from('./images/stair_blue.png');
+      const stair_red = PIXI.Texture.from('./images/stair_red.png');
+      const stair_green = PIXI.Texture.from('./images/stair_green.png');
 
-      const stair_blue = sprite('./images/stair_blue.png');
-      stair_blue.x = app.renderer.width;
-      stair_blue.y = app.renderer.height / 2;
-      stair_blue.anchor.x = 1;
-      stair_blue.anchor.y = 0.52;
-      app.stage.addChild(stair_blue);
-      stair_blue.visible = false;
+      const textures = [
+        stair_blue,
+        stair_red,
+        stair_green,
+      ];
 
-      const stair_red = sprite('./images/stair_red.png');
-      stair_red.x = app.renderer.width;
-      stair_red.y = app.renderer.height / 2;
-      stair_red.anchor.x = 1;
-      stair_red.anchor.y = 0.52;
-      app.stage.addChild(stair_red);
-      stair_red.visible = false;
+      const btn_blue = PIXI.Texture.from('./images/st_blue.png');
+      const btn_red = PIXI.Texture.from('./images/st_red.png');
+      const btn_green = PIXI.Texture.from('./images/st_green.png');
 
-      const stair_green = sprite('./images/stair_green.png');
-      stair_green.x = app.renderer.width;
-      stair_green.y = app.renderer.height / 2;
-      stair_green.anchor.x = 1;
-      stair_green.anchor.y = 0.52;
-      app.stage.addChild(stair_green);
-      stair_green.visible = false;
+      const btn_stairs = [
+        btn_blue,
+        btn_red,
+        btn_green,
+      ];
+
+      const stair = new PIXI.Sprite(stair_old);
+      stair.x = app.screen.width;
+      stair.y = app.screen.height / 2;
+      stair.anchor.x = 1;
+      stair.anchor.y = 0.4;
+      app.stage.addChild(stair);
 
       const plant3 = sprite('./images/plant3.png');
       plant3.x = app.renderer.width;
@@ -119,130 +114,80 @@
       app.stage.addChild(menu);
       menu.visible = false;
 
-      const item1 = new PIXI.Container();
-      item1.interactive = true;
-      item1.buttonMode = true;
-      item1
-        .on('pointerdown', onItemDown);
-      menu.addChild(item1);
-      function onItemDown() {
-        ok1.visible = true;
-        ok2.visible = false;
-        ok3.visible = false;
-        menu_fon1_act.visible = true;
-        menu_fon2_act.visible = false;
-        menu_fon3_act.visible = false;
-        stair_old.visible = false;
-        stair_blue.visible = true;
-        stair_red.visible = false;
-        stair_green.visible = false;
-      }
-      const menu_fon1 = sprite('./images/menu_fon.png');
-      menu_fon1.x = 10;
-      item1.addChild(menu_fon1);
-      const menu_fon1_act = sprite('./images/menu_fon_act.png');
-      menu_fon1_act.x = 20;
-      menu_fon1_act.y = 5;
-      item1.addChild(menu_fon1_act);
-      menu_fon1_act.visible = false;
-      const st_blue = sprite('./images/st_blue.png');
-      st_blue.x = 37;
-      st_blue.y = 7;
-      item1.addChild(st_blue);
-      const ok1 = sprite('./images/ok.png');
-      ok1.x = 0;
-      ok1.y = 0;
-      ok1.anchor.y = -1.2;
-      item1.addChild(ok1);
-      ok1.visible = false;
+      const oks = [];
+      const acts_menu = [];
 
-      const item2 = new PIXI.Container();
-      item2.x = 130;
-      item2.y = 0;
-      item2.interactive = true;
-      item2.buttonMode = true;
-      item2
-        .on('pointerdown', onItemDown2);
-      menu.addChild(item1);
-      function onItemDown2() {
-        //this.isdown = true;
-        ok1.visible = false;
-        ok2.visible = true;
-        ok3.visible = false;
-        menu_fon1_act.visible = false;
-        menu_fon2_act.visible = true;
-        menu_fon3_act.visible = false;
-        stair_old.visible = false;
-        stair_blue.visible = false;
-        stair_red.visible = true;
-        stair_green.visible = false;
-      }
-      menu.addChild(item2);
-      const menu_fon2 = sprite('./images/menu_fon.png');
-      menu_fon2.x = 10;
-      item2.addChild(menu_fon2);
-      const menu_fon2_act = sprite('./images/menu_fon_act.png');
-      menu_fon2_act.x = 20;
-      menu_fon2_act.y = 5;
-      item2.addChild(menu_fon2_act);
-      menu_fon2_act.visible = false;
-      const st_red = sprite('./images/st_red.png');
-      st_red.x = 40;
-      st_red.y = 0;
-      item2.addChild(st_red);
-      const ok2 = sprite('./images/ok.png');
-      ok2.x = 0;
-      ok2.y = 0;
-      ok2.anchor.y = -1.2;
-      item2.addChild(ok2);
-      ok2.visible = false;
+      for (let i = 0; i < 3; i++) {
+        const item = new PIXI.Container();
+        item.x = 130 * i;
+        item.interactive = true;
+        item.buttonMode = true;
+        item.on('click', handleClick);
 
-      const item3 = new PIXI.Container();
-      item3.x = 260;
-      item3.y = 0;
-      item3.interactive = true;
-      item3.buttonMode = true;
-      item3
-        .on('pointerdown', onItemDown3);
-      menu.addChild(item1);
-      function onItemDown3() {
-        //this.isdown = true;
-        ok1.visible = false;
-        ok2.visible = false;
-        ok3.visible = true;
-        menu_fon1_act.visible = false;
-        menu_fon2_act.visible = false;
-        menu_fon3_act.visible = true;
-        stair_old.visible = false;
-        stair_blue.visible = false;
-        stair_red.visible = false;
-        stair_green.visible = true;
+        function handleClick() {
+          for (let i = 0; i < acts_menu.length; i++) {
+            acts_menu[i].visible = false;
+            oks[i].visible = false;
+          }
+
+          oks[i].visible = true;
+          acts_menu[i].visible = true;
+          stair.texture = textures[i];
+          stair.anchor.y = 0.52;
+          let n = 280;
+          let check1 = true;
+          let check2 = true;
+          app.ticker.add(() => {
+            if (n < 350 && check1) {
+              n += 3;
+              stair.y = n;
+            } else if (n > 340 && check2) {
+              check1 = false;
+              n -= 3;
+              stair.y = n;
+            } else {
+              check2 = false;
+              check1 = true;
+            }
+          });
+        }
+        menu.addChild(item);
+        const menu_fon = sprite('./images/menu_fon.png');
+        menu_fon.x = 10;
+        item.addChild(menu_fon);
+        const menu_fon_act = sprite('./images/menu_fon_act.png');
+        menu_fon_act.x = 20;
+        menu_fon_act.y = 5;
+        item.addChild(menu_fon_act);
+        menu_fon_act.visible = false;
+        acts_menu.push(menu_fon_act);
+        const btn_img = new PIXI.Sprite(btn_stairs[i]);
+        btn_img.x = 35;
+        btn_img.y = 18;
+        item.addChild(btn_img);
+        const ok = sprite('./images/ok.png');
+        ok.x = 0;
+        ok.y = 0;
+        ok.anchor.y = -1.2;
+        ok.interactive = true;
+        ok.buttonMode = true;
+        ok.on('click', () => {
+          menu.visible = false;
+          final.visible = true;
+        });
+        item.addChild(ok);
+        ok.visible = false;
+        oks.push(ok);
       }
-      menu.addChild(item3);
-      const menu_fon3 = sprite('./images/menu_fon.png');
-      menu_fon3.x = 10;
-      item3.addChild(menu_fon3);
-      const menu_fon3_act = sprite('./images/menu_fon_act.png');
-      menu_fon3_act.x = 20;
-      menu_fon3_act.y = 5;
-      item3.addChild(menu_fon3_act);
-      menu_fon3_act.visible = false;
-      const st_green = sprite('./images/st_green.png');
-      st_green.x = 36;
-      st_green.y = 0;
-      item3.addChild(st_green);
-      const ok3 = sprite('./images/ok.png');
-      ok3.x = 0;
-      ok3.y = 0;
-      ok3.anchor.y = -1.2;
-      item3.addChild(ok3);
-      ok3.visible = false;
+
+      let hammerScale = 0;
 
       const hammer = sprite('./images/hammer.png');
-      hammer.x = app.renderer.width;
+      hammer.x = app.renderer.width / 1.25;
       hammer.y = app.renderer.height / 2;
-      hammer.anchor.x = 3;
+      hammer.anchor.x = 0.5;
       hammer.anchor.y = 0.5;
+      hammer.scale.set(0, 0);
       hammer.interactive = true;
       hammer.buttonMode = true;
       hammer.on('pointerdown', onHammerCklick);
@@ -250,22 +195,53 @@
         menu.visible = true;
         hammer.visible = false;
       }
-      app.stage.addChild(hammer);
+      setTimeout(() => {
+       app.stage.addChild(hammer);
+
+       app.ticker.add(() => {
+         hammerScale += 0.04;
+         if (hammerScale <= 1) {
+           hammer.scale.set(hammerScale, hammerScale);
+         }
+       });
+      }, 2000);
+
+      const final = new PIXI.Container();
+      app.stage.addChild(final);
+      final.visible = false;
+
+      const final_layer = sprite('./images/final_layer.png');
+      final_layer.width = window.innerWidth;
+      final_layer.height = window.innerHeight;
+      final.addChild(final_layer);
+
+      const final_window = sprite('images/final_window.png');
+      final_window.x = window.innerWidth / 2;
+      final_window.y = window.innerHeight / 2;
+      final_window.anchor.set(0.5, 0.6);
+      final.addChild(final_window);
+
 
       const logo = sprite('./images/logo.png');
-      // logo.x = 31;
-      // logo.y = 4;
       logo.position.set(31, 4);
       app.stage.addChild(logo);
 
       const cont = sprite('./images/continue.png');
       cont.x = app.renderer.width / 2;
-      cont.y = app.renderer.height;
+      cont.y = app.renderer.height - 100;
       cont.anchor.x = 0.5;
-      cont.anchor.y = 1.2;
+      cont.anchor.y = 0.5;
+      cont.interactive = true;
+      cont.buttonMode = true;
       app.stage.addChild(cont);
 
+      let count = 0;
 
+      app.ticker.add(() => {
+          count += 0.05;
+          cont.scale.x = 1 + Math.sin(count) * 0.05;
+          cont.scale.y = 1 + Math.sin(count) * 0.05;
+      });
     </script>
   </body>
 </html>
